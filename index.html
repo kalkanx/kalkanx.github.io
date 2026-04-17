@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkan: Game Server DDoS Protection at Wire Speed</title>
+  <meta name="description" content="eBPF-powered DDoS protection for FiveM, Minecraft, and Source engine game servers. Kernel-space filtering with no proxy overhead.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Nunito:wght@200;300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#hero" class="nav-logo">kalkan</a>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#why">Why Kalkan</a></li>
+    <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      eBPF &middot; Kernel-space &middot; Wire Speed
+    </div>
+    <h1>DDoS Protection Built for<br><em>Game Servers</em></h1>
+    <p class="hero-sub">
+      Kalkan uses eBPF to run game-protocol-aware filtering directly in the Linux kernel. Attack traffic is dropped before your game server ever processes it. No proxy in the path. No added latency. Purpose-built for FiveM, Minecraft, and Source engine operators.
+    </p>
+    <a href="#waitlist" class="btn-primary">Request Early Access</a>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-value">eBPF</span>
+        <span class="stat-label">kernel-space, no proxy</span>
+      </div>
+      <div>
+        <span class="stat-value">&lt;1&thinsp;&mu;s</span>
+        <span class="stat-label">filtering overhead per packet</span>
+      </div>
+      <div>
+        <span class="stat-value">L3–L7</span>
+        <span class="stat-label">protocol-aware mitigation</span>
+      </div>
+      <div>
+        <span class="stat-value">0</span>
+        <span class="stat-label">proxy hops to your server</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Problem -->
+<section id="problem">
+  <div class="section-label">// the problem</div>
+  <h2>Game servers are soft targets.<br>Generic DDoS tools don't fix that.</h2>
+  <p class="section-intro">
+    Volumetric floods aim at your IP. Application-layer attacks exploit your game protocol. Most protection sits in front of your server, adding latency, introducing proxy failure points, and filtering traffic blind to what FiveM or Minecraft actually looks like.
+  </p>
+  <div class="problem-cards">
+    <div class="problem-card">
+      <span class="problem-num">// 01</span>
+      <h3>Protocol-blind filtering</h3>
+      <p>Generic L4 tools can't distinguish a legitimate FiveM handshake from a crafted flood packet. Attackers exploit this. You get false drops or no effective protection.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-num">// 02</span>
+      <h3>Proxy latency tax</h3>
+      <p>Traffic-scrubbing proxies add 10–40ms of round-trip overhead. For game servers where 20ms is the difference between playable and broken, that cost is not acceptable.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-num">// 03</span>
+      <h3>Coarse rate limiting</h3>
+      <p>IP-level thresholds that ignore game session state punish legitimate players during attack spikes. You lose players you should have kept connected.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- How It Works -->
+<div class="bg-subtle" id="how-it-works">
+  <div class="section-wide">
+    <div class="section-label">// how it works</div>
+    <h2>Filtering at the earliest possible hook</h2>
+    <p class="section-intro">
+      Kalkan loads eBPF programs into the kernel per customer configuration. Malicious traffic is absorbed before the OS networking stack processes it. The game process never sees it.
+    </p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <span class="step-num">// 01 &middot; inbound</span>
+        <h3>Traffic Arrives</h3>
+        <p>All inbound packets hit your NIC. Kalkan's XDP program fires at the driver receive path, before the kernel networking stack processes anything.</p>
+        <div class="tags">
+          <span class="tag tag-blue">raw packets</span>
+          <span class="tag tag-blue">pre-OS</span>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step is-kernel">
+        <span class="step-num">// 02 &middot; kernel</span>
+        <h3>eBPF Filters</h3>
+        <p>Per-IP rate limiting, blocklist enforcement, stateless protocol challenges, and game-protocol validation. All running in the kernel at wire speed.</p>
+        <div class="tags">
+          <span class="tag tag-blue">rate limit</span>
+          <span class="tag tag-blue">blocklist</span>
+          <span class="tag tag-blue">UDP challenge</span>
+          <span class="tag tag-red">drop flood</span>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="step-num">// 03 &middot; delivery</span>
+        <h3>Clean Traffic Delivered</h3>
+        <p>Verified packets reach your game process. No proxy hop, no added latency path, no single point of failure between the internet and your server.</p>
+        <div class="tags">
+          <span class="tag tag-green">legitimate players</span>
+          <span class="tag tag-blue">zero proxy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Games -->
+<section id="games">
+  <div class="section-label">// supported platforms</div>
+  <h2>Built for the games being attacked</h2>
+  <p class="section-intro">
+    FiveM, Minecraft, and Source engine servers face attacks that generic tools were never designed to handle. Kalkan knows the difference.
+  </p>
+  <div class="games-grid">
+    <div class="game-card">
+      <span class="game-id">// FiveM</span>
+      <h3>FiveM</h3>
+      <p>FiveM servers are among the most actively targeted in game hosting. Most operators run on infrastructure with no protocol-aware protection. Attackers know this and exploit it with high-volume UDP floods and fake session spam that exhaust server resources before a single real player connects.</p>
+      <p>With Kalkan, attack traffic is identified and dropped in the kernel before FXServer processes it. Your server stays online and your player count stays intact.</p>
+    </div>
+    <div class="game-card">
+      <span class="game-id">// Minecraft</span>
+      <h3>Minecraft</h3>
+      <p>Minecraft is the highest-volume DDoS target in game hosting. Login bot floods, TCP connection storms, and disconnect-reconnect loops are daily occurrences for any server with real traffic. BungeeCord and Velocity setups add additional attack surface.</p>
+      <p>Kalkan stops bot floods and connection storms before they reach your server. Legitimate players connect normally. BungeeCord and Velocity are fully supported.</p>
+    </div>
+    <div class="game-card">
+      <span class="game-id">// Source Engine</span>
+      <h3>Source Engine</h3>
+      <p>A2S query reflection is the defining attack vector for Source engine servers. A single crafted query triggers a response large enough to saturate your uplink. The game itself never gets touched, but it goes offline anyway. CS2, Rust, and Garry's Mod operators all face this.</p>
+      <p>Kalkan rate-limits query traffic at the kernel level before your bandwidth is consumed. Game ports stay open. No separate configuration per game.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Why Kalkan -->
+<section id="why">
+  <div class="section-label">// differentiators</div>
+  <h2>Not another proxy in front of your server</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <span class="why-key">ebpf_kernel_space</span>
+      <h3>eBPF runs in the kernel, not in front of it</h3>
+      <p>Most DDoS protection routes your traffic through an external scrubbing proxy. That adds latency, creates a new failure point, and means your traffic is handled by infrastructure you don't control. Kalkan uses eBPF to filter directly in the Linux kernel on your own server. No detour, no proxy overhead.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-key">protocol_aware</span>
+      <h3>It knows what your game traffic looks like</h3>
+      <p>Generic tools see packets. Kalkan sees FiveM connection requests, Minecraft login sequences, and Source engine queries. That distinction is what makes it possible to stop attack traffic without dropping real players. It cannot be replicated with a tool that doesn't understand your protocol.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-key">modular_programs</span>
+      <h3>No shared filter chain</h3>
+      <p>Your server loads only the protection it needs. A FiveM server runs FiveM-specific eBPF programs. A Minecraft server runs Minecraft-specific programs. There is no generic ruleset applied to everyone. Less false positives, less overhead, and protection calibrated to your actual traffic.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-key">real_time_visibility</span>
+      <h3>You see what's happening in real time</h3>
+      <p>Every attack event, every blocked IP, every spike in drop rate is visible in a live dashboard with alerts sent to wherever you want them. You are not flying blind during an attack. You know when it started, how large it is, and when it stopped.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Waitlist -->
+<section id="waitlist">
+  <div class="section-label">// early access</div>
+  <h2>Join the waitlist</h2>
+  <p class="section-intro">
+    Kalkan is in pre-release. If you operate game servers and are getting hit, get in early. Initial access will be limited.
+  </p>
+  <form class="form-wrap" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="5bf52de4-3894-460c-8d08-30e05726d193">
+    <input type="hidden" name="subject" value="New Waitlist Request - Kalkan">
+    <input type="hidden" name="redirect" value="false">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="server-type">Server type</label>
+      <select id="server-type" name="server_type" required>
+        <option value="" disabled selected>Select your game</option>
+        <option value="fivem">FiveM / GTA V</option>
+        <option value="minecraft-java">Minecraft Java</option>
+        <option value="minecraft-bedrock">Minecraft Bedrock</option>
+        <option value="cs2">CS2</option>
+        <option value="rust">Rust</option>
+        <option value="gmod">Garry's Mod</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Message (optional)</label>
+      <textarea id="message" name="message" placeholder="Describe your current DDoS situation, traffic volume, or anything relevant."></textarea>
+    </div>
+    <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
+    <button type="submit" class="btn-primary btn-submit">Request Access</button>
+    <p class="form-note">No spam. Direct reply from the founder. Unsubscribe any time.</p>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">kalkan</span>
+    <span class="footer-copy">&copy; 2026 Kalkan. All rights reserved.</span>
+    <span class="footer-contact"><a href="mailto:info@kalkanx.com">info@kalkanx.com</a></span>
+  </div>
+</footer>
+
+<script src="https://web3forms.com/client/script.js" async defer></script>
+</body>
+</html>
